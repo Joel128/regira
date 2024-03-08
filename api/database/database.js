@@ -1,8 +1,8 @@
 import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize("regira", "root", "admin", {
-  host: "localhost",
-  port: "3307",
+const sequelize = new Sequelize("regira", "admin", "admin", {
+  host: "db",
+  port: "3306",
   dialect: "mysql",
 });
 
@@ -15,4 +15,4 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-export default sequelize ; // Cambiado de `export default sequelize;` a `export { sequelize };`
+export default sequelize ;

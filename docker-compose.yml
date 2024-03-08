@@ -1,0 +1,23 @@
+services:
+  db:
+    image: mysql:8.0-debian
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin
+      - MYSQL_DATABASE=regira
+  adminer:
+    image: adminer
+    container_name: adminer
+    environment:
+      - ADMINER_DEFAULT_SERVER=db
+    restart: always
+    ports:
+      - 8080:8080
+  node:
+    image: node:20.11.0-alpine
+    volumes:
+      - .:/app
+    command: sh -c "while sleep 3600; do :; done"

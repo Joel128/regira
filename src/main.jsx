@@ -1,10 +1,32 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
+
+// STYLES
+
+import './App.css'
 import './index.css'
 
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+//
+//  COMPONENTS
+//
+import Login from './components/Login.jsx'
+import NewIssue from './components/newIssue.jsx'
+import IssueList from './components/issueList.jsx'
+import Header from './components/header.jsx'
+
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+    <BrowserRouter>
+    
+    <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/header" element={<Header />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/newIssue" element={<NewIssue />} />
+        <Route path="/issueList" element={<IssueList />} />
+    </Routes>
+    
+    </BrowserRouter>
+  )

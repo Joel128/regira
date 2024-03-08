@@ -2,8 +2,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../database/database.js";
 
-const Issues = (await import("./issues.js")).default;
-const Users = (await import("./users.js")).default;
+import Issues from "./issues.js";
+import Users from "./users.js";
 
 const Comments = sequelize.define("comments", {
   id: {

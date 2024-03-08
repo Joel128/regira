@@ -2,7 +2,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../database/database.js";
 
-const Issues = (await import("./issues.js")).default;
+import Issues from "./issues.js";
+
 
 
 const Tag = sequelize.define("tag", {

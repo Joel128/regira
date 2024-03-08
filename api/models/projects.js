@@ -1,7 +1,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../database/database.js";
-const Users = (await import("./users.js")).default;
-const Issues = (await import("./issues.js")).default;
+import Issues from "./issues.js";
+import Users from "./users.js";
+
 const Projects = sequelize.define("projects", {
   id: {
     type: DataTypes.INTEGER,
