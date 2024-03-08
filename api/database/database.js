@@ -1,8 +1,8 @@
 import { Sequelize } from "sequelize";
 
 const sequelize = new Sequelize("regira", "admin", "admin", {
-  host: "db",
-  port: "3306",
+  host: "localhost",
+  port: "3307",
   dialect: "mysql",
 });
 

@@ -1,12 +1,21 @@
-import {useState, useEffect} from "react";
+import {useState, useEffect, useContext} from "react";
 import { useNavigate } from "react-router-dom";
+import Contexte from "../Context";
 
 const URL = "http://localhost:3000/api";
 
 export default () => {
+
     const [issues, setIssues] = useState([]);
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const {loguejat} = useContext(Contexte)
+
+    useEffect(()=>{
+        if (!loguejat){
+            navigate('/login')
+        }
+    }, [loguejat])
 
     const options = {
         method: "GET",
@@ -26,21 +35,21 @@ export default () => {
     if (error) {
         return <p>{error}</p>;
     }
-
+    console.log(error)
     return (
         <div>
             <h1>Issues</h1>
             <ul>
-                {issues.map((issue) => (
-                    <li key={issue.id}>
+                {issues.map((issues) => (
+                    <li key={issues.id}>
                         <a
                             href="#"
                             onClick={(e) => {
                                 e.preventDefault();
-                                navigate(`/issue/${issue.id}`);
+                                navigate(`/issue/${issues.id}`);
                             }}
                         >
-                            {issue.title}
+                            {issues.title}
                         </a>
                     </li>
                 ))}

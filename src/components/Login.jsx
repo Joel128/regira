@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Context from "../Context";
 
 const URL = "http://localhost:3000/api";
 
 export default () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const login = async (e) => {
+  const { setLoguejat } = useContext(Context);
+;
+  const login = (e) => {
     e.preventDefault();
 
     const credencials = {
@@ -27,7 +30,10 @@ export default () => {
     fetch(`${URL}/login`, options)
       .then((res) => res.json())
       .then((data) => {
-        redirect("/");
+        if (!data.error) {
+          setLoguejat(data);
+          navigate("/");
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -35,57 +41,57 @@ export default () => {
   };
 
   return (
-    <div className="w-full max-w-xs">
+    <div className="w-full max-w-xs m-auto">
+      <br />
+      <br />
+
       <form
         onSubmit={login}
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-      />
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="email"
-        >
-          Email
-        </label>
-        <input
-          onInput={(e) => setEmail(e.target.value)}
-          value={email}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="email"
-          type="email"
-          placeholder="example@example.com"
-        />
-      </div>
-      <div className="mb-6">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="password"
-        >
-          Password
-        </label>
-        <input
-          onInput={(e) => setPassword(e.target.value)}
-          value={password}
-          className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-          id="password"
-          type="password"
-          placeholder="******************"
-        />
-      </div>
-      <div className="flex items-center justify-between">
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="submit"
-        >
-          Sign in
-        </button>
-        <a
-          className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-          onClick={alert("Eres tonto o que?")}
-        >
-          Forgot Password?
-        </a>
-      </div>
+      >
+        <h1 className="text-center">Login</h1>
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="email"
+          >
+            Email
+          </label>
+          <input
+            onInput={(e) => setEmail(e.target.value)}
+            value={email}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="email"
+            type="text"
+            placeholder="Username"
+          />
+        </div>
+        <div className="mb-6">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="password"
+          >
+            Password
+          </label>
+          <input
+            onInput={(e) => setPassword(e.target.value)}
+            value={password}
+            className="shadow appearance-none border
+            rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            id="password"
+            type="password"
+            placeholder="******************"
+          />
+        </div>
+        <div className="text-center">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
