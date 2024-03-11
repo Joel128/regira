@@ -1,15 +1,17 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Context from "../Context";
+import Cookie from "js-cookie";
 
 const URL = "http://localhost:3000/api";
 
 export default () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [Cookie, setCookie] = useState("");
   const navigate = useNavigate();
   const { setLoguejat } = useContext(Context);
-;
+  const { setId } = useContext(Context);
   const login = (e) => {
     e.preventDefault();
 
@@ -30,9 +32,30 @@ export default () => {
     fetch(`${URL}/login`, options)
       .then((res) => res.json())
       .then((data) => {
+        // Accede a las cookies en la respuesta
+        const tokenCookie = document.cookie
+          .split(";")
+          .find((cookie) => cookie.trim().startsWith("token="));
+        const userIdCookie = document.cookie
+          .split(";")
+          .find((cookie) => cookie.trim().startsWith("userId="));
+
+        // Extrae los valores de las cookies
+        const tokenValue = tokenCookie ? tokenCookie.split("=")[1] : null;
+        const userIdValue = userIdCookie ? userIdCookie.split("=")[1] : null;
+
+        // Haz algo con los valores (por ejemplo, guarda el userId en el estado)
+        console.log("Token:", tokenValue);
+        console.log("UserId:", userIdValue);
+        data = {
+          ...data,
+          token: tokenValue,
+          userId: userIdValue,
+        }
+        setCookie(tokenValue);
         if (!data.error) {
           setLoguejat(data);
-          navigate("/");
+          navigate("/projects");
         }
       })
       .catch((error) => {

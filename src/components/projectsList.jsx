@@ -11,7 +11,7 @@ export default () => {
   const [error, setError] = useState("");
   const redirect = useNavigate();
   const { loguejat } = useContext(Contexte);
-  console.log(loguejat)
+  console.log("asdf",loguejat);
 
   useEffect(() => {
     if (!loguejat) {
@@ -25,7 +25,7 @@ export default () => {
   };
 
   useEffect(() => {
-    fetch(`${URL}/projects`, options)
+    fetch(`${URL}/projects/user/${loguejat.userId}`, options)
       .then((res) => res.json())
       .then((data) => {
         setProjects(data);
@@ -42,18 +42,29 @@ export default () => {
   return (
     <div>
       <h1>Projects</h1>
-      <ul>
+      <ul className="grid grid-cols-3 gap-4">
         {projects.map((project) => (
           <li key={project.id}>
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                redirect(`/project/${project.id}`);
-              }}
-            >
-              {project.name}
-            </a>
+            <div className="max-w-sm rounded overflow-hidden shadow-lg">
+              <div className=" px-6 py-4">
+                <div className="font-bold text-xl mb-2">{project.name}</div>
+                <p className="text-gray-700 text-base">
+                  Project Description: {project.desc}
+                </p>
+                <p className="text-gray-700 text-base">
+                  Projects Status: {project.status === 1 ? "Open" : "Closed"}
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-4 px-6 pt-4 pb-2">
+            <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+              See issues
+            </button>
+            <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+              Create issues
+            </button>
+            </div>
+            </div>
+
           </li>
         ))}
       </ul>

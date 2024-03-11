@@ -20,6 +20,7 @@ const login = async (req, res) => {
       { expiresIn: "2h" }
     ); // Genera un token JWT vàlid durant 2 hores
     res.cookie("token", token, { httpOnly: false, maxAge: 7200000 }); // Estableix el token com una cookie
+    res.cookie("userId", user.id, { httpOnly: false, maxAge: 7200000 });
     res.json({ message: "Login correcte" }); // Retorna missatge d'èxit
   } catch (error) {
     res.status(500).json({ error: error.message }); // Retorna error 500 amb el missatge d'error

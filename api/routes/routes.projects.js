@@ -5,6 +5,10 @@ import {
     readItem,
     readItems,
   } from "../controllers/generics.controllers.js";
+  import projectsControllers from "../controllers/projects.controller.js";
+  const { getProjectsById } = projectsControllers;
+
+
   import { Router } from "express";
   const router = Router();
   
@@ -16,5 +20,6 @@ import {
     .get("/projects/:id", checkToken, async (req, res) => await readItem(req, res, Projects))
     .post("/projects", checkToken, async (req, res) => await createItem(req, res, Projects))
     .put("/projects/:id", checkToken, async (req, res) => await updateItem(req, res, Projects))
+    .get("/projects/user/:id", checkToken, async (req, res) => await getProjectsById(req, res,Projects))
     .delete("/projects/:id", checkToken, async (req, res) => await deleteItem(req, res, Projects));
   

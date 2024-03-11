@@ -3,61 +3,47 @@ import "./App.css";
 import { Outlet, Link } from "react-router-dom";
 import { useState } from "react";
 import Context from "./Context";
+import Cookies from "js-cookie";
+
+import Header from "./components/header.jsx";
+import { useEffect } from "react";
 
 function App() {
+  const API_URL = "http://localhost:3000/api";
+
   const [loguejat, setLoguejat] = useState(null);
   const handleLogOut = () => {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     window.location.href = "/login";
   };
 
+  useEffect(() => {
+    // si tenim una cookie, intentem validar-la!
+    if (document.cookie.includes("token")) {
+      fetch(API_URL + "/refresh", { credentials: "include" })
+        .then((e) => e.json())
+        .then((data) => {
+          console.log("refresh: ",data);
+          if (data.error) {
+            // api rebutja la cookie local, l'esborrem per mitjà de la funció logout()
+            logout();
+          } else {
+            // api accepta la cookie, simulem login desant les dades rebudes a "loguejat"
+            setLoguejat(data);
+          }
+        });
+    }
+  }, []);
+
   const dades = { loguejat, setLoguejat };
-  console.log(dades);
   return (
     <>
       <Context.Provider value={dades}>
-        <nav className="bg-blue-500 p-4">
-          <div className="container mx-auto">
-            <div className="flex items-center justify-between">
-              <a href="/" className="text-white font-bold text-xl ">
-                Regira
-              </a>
-              <div className="space-x-4">
-                {loguejat && (
-                  <Link className="text-white" to="/newIssue">
-                    Create Issues
-                  </Link>
-                )}
-                {loguejat && (
-                  <Link className="text-white" to="/issueList">
-                    Your issues
-                  </Link>
-                )}
-                {loguejat && (
-                  <Link className="text-white" to="/projects">
-                    Your Projects
-                  </Link>
-                )}
-                {!loguejat && (
-                  <Link className="text-white" to="/login">
-                    {" "}
-                    Login
-                  </Link>
-                )}
-                {loguejat && (
-                  <Link
-                    className="text-white"
-                    onClick={handleLogOut}
-                    to="/logout"
-                  >
-                    {" "}
-                    Log Out
-                  </Link>
-                )}
-              </div>
-            </div>
-          </div>
-        </nav>
+        <Header
+          loguejat={loguejat}
+          setLoguejat={setLoguejat}
+          handleLogOut={handleLogOut}
+        ></Header>
         <div className=" p-10">
           <Outlet />
         </div>
