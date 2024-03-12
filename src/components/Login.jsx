@@ -8,10 +8,8 @@ const URL = "http://localhost:3000/api";
 export default () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [Cookie, setCookie] = useState("");
   const navigate = useNavigate();
   const { setLoguejat } = useContext(Context);
-  const { setId } = useContext(Context);
   const login = (e) => {
     e.preventDefault();
 
@@ -45,15 +43,13 @@ export default () => {
         const userIdValue = userIdCookie ? userIdCookie.split("=")[1] : null;
 
         // Haz algo con los valores (por ejemplo, guarda el userId en el estado)
-        console.log("Token:", tokenValue);
-        console.log("UserId:", userIdValue);
         data = {
           ...data,
-          token: tokenValue,
           userId: userIdValue,
+          token:  tokenValue,
         }
-        setCookie(tokenValue);
         if (!data.error) {
+          const cookie = `token=${tokenValue}; max-age=3600; path=/;`;
           setLoguejat(data);
           navigate("/projects");
         }

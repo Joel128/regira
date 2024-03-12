@@ -21,14 +21,13 @@ const login = async (req, res) => {
     ); // Genera un token JWT vàlid durant 2 hores
     res.cookie("token", token, { httpOnly: false, maxAge: 7200000 }); // Estableix el token com una cookie
     res.cookie("userId", user.id, { httpOnly: false, maxAge: 7200000 });
-    res.json({ message: "Login correcte" }); // Retorna missatge d'èxit
+    res.json({ name: user.name, id: user.id}); // Retorna missatge d'èxit
   } catch (error) {
     res.status(500).json({ error: error.message }); // Retorna error 500 amb el missatge d'error
   }
 };
 
 const register = async (req, res) => {
-  console.log(req.body);
   try {
     let { name, email, password } = req.body; // Obté el nom, email i contrasenya de la petició
     if (!name || !email || !password) {
@@ -43,9 +42,16 @@ const register = async (req, res) => {
     password = bcrypt.hashSync(password, 10); // Encripta la contrasenya
     const user = await User.create({ name, email, password }); // Crea l'usuari amb les dades proporcionades
     res.status(201).json(user); // Retorna l'usuari creat amb el codi d'estat 201 (Creat)
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
-export default { login, register };
+const checkCookies = async (req, res, Model) => {
+  const userId = req.id;
+  const user = await Model.findOne(userId);
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+  return res.json({ userId: user.id, name: user.name });
+};
+
+export default { checkCookies, login, register };

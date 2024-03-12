@@ -11,19 +11,17 @@ export default () => {
   const [error, setError] = useState("");
   const redirect = useNavigate();
   const { loguejat } = useContext(Contexte);
-  console.log("asdf",loguejat);
 
   useEffect(() => {
     if (!loguejat) {
       redirect("/login");
     }
   }, [loguejat]);
-
+console.log("dades:::::::",loguejat);
   const options = {
     method: "GET",
     credentials: "include",
   };
-
   useEffect(() => {
     fetch(`${URL}/projects/user/${loguejat.userId}`, options)
       .then((res) => res.json())

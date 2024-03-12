@@ -12,7 +12,6 @@ export default () => {
   const [cookie, setCookieValue] = useState("");
   const navigate = useNavigate();
   const { loguejat } = useContext(Contexte);
-
   useEffect(() => {
     if (!loguejat) {
       navigate("/login");
@@ -37,7 +36,6 @@ export default () => {
 
   useEffect(() => {
     const token = Cookie.get("cookie");
-    console.log(token);
     if (cookie) {
       setCookieValue(token);
     }
@@ -45,7 +43,6 @@ export default () => {
   if (error) {
     return <p>{error}</p>;
   }
-  console.log(cookie);
   return (
     <div>
       <h1>Issues</h1>

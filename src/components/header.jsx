@@ -5,6 +5,7 @@ import Context from "../Context";
 
 
 export default ( {loguejat, setLoguejat, handleLogOut} ) => {
+  console.log("dades loguejat header :::",loguejat);
 
   return (
     <>
@@ -49,7 +50,7 @@ export default ( {loguejat, setLoguejat, handleLogOut} ) => {
                     to="/logout"
                   >
                     {" "}
-                    Log Out
+                    Log Out ({loguejat.name})
                   </Link>
                 )}
               </div>
