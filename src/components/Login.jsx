@@ -3,13 +3,23 @@ import { useNavigate } from "react-router-dom";
 import Context from "../Context";
 import Cookie from "js-cookie";
 
+
 const URL = "http://localhost:3000/api";
 
 export default () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-  const { setLoguejat } = useContext(Context);
+  const redirect = useNavigate();
+
+  const { loguejat, setLoguejat } = useContext(Context);
+
+  useEffect(() => {
+    if (loguejat) {
+      console.log(loguejat);
+
+      redirect("/projects");
+    }
+  }, []);
   const login = (e) => {
     e.preventDefault();
 
@@ -35,8 +45,8 @@ export default () => {
 
         data = {
           ...payload,
-          token:  token,
-        }
+          token: token,
+        };
         if (!data.error) {
           console.log(data);
           setLoguejat(data);

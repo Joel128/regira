@@ -16,7 +16,10 @@ const getColorByType = ({ type }) => {
 export default ({ data, reference, isDragging, remove }) => {
   return (
     <>
-      <div ref={reference} className={"border p-2 m-3 " + getColorByType(data)}>
+      <div
+        ref={reference}
+        className={"p-3 mih-[300px] border " + getColorByType(data)}
+      >
         <h1>
           {data.title} {data.id}
         </h1>

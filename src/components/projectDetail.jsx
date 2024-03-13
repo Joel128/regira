@@ -1,23 +1,23 @@
 import { useParams } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Context from "../Context";
 import { useDrag, useDrop, DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import IssueCard from "./IssueCard";
 
 const Boxes = [
-  { state: "backlog", titol: "Pendent" },
-  { state: "in_progress", titol: "En progres" },
-  { state: "done", titol: "Fet" },
-  { state: "closed", titol: "Tancat" },
-  { state: "review", titol: "Revisio" },
+  { status: "open", titol: "En progres" },
+
+  { status: "closed", titol: "Tancat" },
 ];
+const ItemType = "ISSUE_ITEM";
 
 const Item = ({ eliminaItem, data }) => {
   const [{ isDragging }, drag_ref] = useDrag(() => ({
     type: ItemType,
     item: { type: ItemType, id: data.id },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
   }));
   return (
     <IssueCard
@@ -33,7 +33,7 @@ const Box = ({ children, caixa, mouItem }) => {
   const [{ isOver }, drop_ref] = useDrop(() => ({
     accept: ItemType,
     drop: (item) => {
-      mouItem(item, caixa.state);
+      mouItem(item, caixa.status);
     },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
@@ -54,27 +54,23 @@ export default () => {
   const [projects, setProjects] = useState([]);
   const [issues, setIssues] = useState([]);
   const id = useParams().id;
-  const navigate = useNavigate();
-  const { actualitza, setActualiza } = useState(0);
+  const [actualitza, setActualitza] = useState(0);
   const [error, setError] = useState("");
   const URL = "http://localhost:3000/api";
 
-  const mouItem = (item, state) => {
+  const mouItem = (item, status) => {
     const options = {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       credentials: "include",
-      body: JSON.stringify({ state }),
+      body: JSON.stringify({ status }),
     };
-    fetch(`${URL}/issues/${item.id}`, options)
+    fetch(`${URL}/issues/${id}`, options)
       .then((res) => res.json())
       .then((data) => {
-        if (data.error) {
-          setError(data.error);
-        }
-        setActualiza(actualitza + 1);
+        setActualitza(actualitza + 1);
       })
       .catch((error) => {
         setError(error);
@@ -92,10 +88,7 @@ export default () => {
     fetch(`${URL}/issues/${item.id}`, options)
       .then((res) => res.json())
       .then((data) => {
-        if (data.error) {
-          setError(data.error);
-        }
-        setActualiza(actualitza + 1);
+        setActualitza(actualitza + 1);
       })
       .catch((error) => {
         setError(error);
@@ -116,23 +109,19 @@ export default () => {
       .catch((error) => {
         setError(error);
       });
-  }, [actualitza]);
-
-  useEffect(() => {
     fetch(`${URL}/issues/project/${id}`, options)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setIssues(data);
       })
       .catch((error) => {
         setError(error);
       });
-  }, []);
-
-  console.log(projects);
+  }, [actualitza]);
 
   if (error) {
-    return <p>{error}</p>;
+    console.log(error);
   }
 
   if (!projects) {
@@ -158,12 +147,12 @@ export default () => {
         <DndProvider backend={HTML5Backend}>
           <div className="grid grid-cols-5 gap-3">
             {Boxes.map((caixa) => (
-              <Box key={caixa.state} caixa={caixa} mouItem={mouItem}>
-                {projects.Issues.filter((e) => e.state == caixa.state).map(
-                  (e) => (
+              <Box key={caixa.status} caixa={caixa} mouItem={mouItem}>
+                {issues
+                  .filter((e) => e.status == caixa.status)
+                  .map((e) => (
                     <Item key={e.id} eliminaItem={eliminaItem} data={e} />
-                  )
-                )}
+                  ))}
               </Box>
             ))}
           </div>

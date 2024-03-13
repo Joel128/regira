@@ -21,4 +21,5 @@ import {
     .put("/issues/:id", checkToken, async (req, res) => await updateItem(req, res,Issues))
     .delete("/issues/:id", checkToken, async (req, res) => await deleteItem(req, res,Issues))
     .get("/issues/user/:id", checkToken, async (req, res) => await getIssuesByUser(req, res,Issues))
+    .patch("/issues/:id", checkToken, async (req, res) => await updateItem(req, res,Issues))
     .get("/issues/project/:id", checkToken, async (req, res) => await getIssuesByProject(req, res,Issues));
