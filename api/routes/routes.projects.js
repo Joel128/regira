@@ -14,7 +14,6 @@ import {
   
   import checkToken from "./checkToken.js";
   import Projects from "../models/projects.js";
-  
   export default router
     .get("/projects", checkToken, async (req, res) => await readItems(req, res, Projects))
     .get("/projects/:id", checkToken, async (req, res) => await readItem(req, res, Projects))

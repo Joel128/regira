@@ -30,26 +30,15 @@ export default () => {
     fetch(`${URL}/login`, options)
       .then((res) => res.json())
       .then((data) => {
-        // Accede a las cookies en la respuesta
-        const tokenCookie = document.cookie
-          .split(";")
-          .find((cookie) => cookie.trim().startsWith("token="));
-        const userIdCookie = document.cookie
-          .split(";")
-          .find((cookie) => cookie.trim().startsWith("userId="));
+        const token = Cookie.get("token");
+        const payload = JSON.parse(atob(token.split(".")[1]));
 
-        // Extrae los valores de las cookies
-        const tokenValue = tokenCookie ? tokenCookie.split("=")[1] : null;
-        const userIdValue = userIdCookie ? userIdCookie.split("=")[1] : null;
-
-        // Haz algo con los valores (por ejemplo, guarda el userId en el estado)
         data = {
-          ...data,
-          userId: userIdValue,
-          token:  tokenValue,
+          ...payload,
+          token:  token,
         }
         if (!data.error) {
-          const cookie = `token=${tokenValue}; max-age=3600; path=/;`;
+          console.log(data);
           setLoguejat(data);
           navigate("/projects");
         }

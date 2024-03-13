@@ -18,6 +18,7 @@ import NewIssue from "./components/newIssue.jsx";
 import IssueList from "./components/issueList.jsx";
 import ProjectsList from "./components/projectsList.jsx";
 import Index from "./components/index.jsx";
+import ProjectDetail from "./components/projectDetail.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -29,6 +30,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/newIssue" element={<NewIssue />} />
         <Route path="/issueList" element={<IssueList />} />
         <Route path="/projects" element={<ProjectsList />} />
+        <Route path="/projectDetail/:id" element={<ProjectDetail />} />
       </Route>
     </Routes>
   </BrowserRouter>

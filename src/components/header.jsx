@@ -50,7 +50,7 @@ export default ( {loguejat, setLoguejat, handleLogOut} ) => {
                     to="/logout"
                   >
                     {" "}
-                    Log Out ({loguejat.name})
+                    Log Out ({loguejat.userName})
                   </Link>
                 )}
               </div>

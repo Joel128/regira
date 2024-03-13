@@ -7,7 +7,7 @@ import {
   } from "../controllers/generics.controllers.js";
 
   import issuesControllers from "../controllers/issues.controllers.js";
-  const { getIssuesByUser } = issuesControllers;
+  const { getIssuesByProject,getIssuesByUser } = issuesControllers;
   import { Router } from "express";
   const router = Router();
   
@@ -19,6 +19,6 @@ import {
     .get("/issues/:id", checkToken, async (req, res) => await readItem(req, res,Issues))
     .post("/issues", checkToken, async (req, res) => await createItem(req, res,Issues))
     .put("/issues/:id", checkToken, async (req, res) => await updateItem(req, res,Issues))
+    .delete("/issues/:id", checkToken, async (req, res) => await deleteItem(req, res,Issues))
     .get("/issues/user/:id", checkToken, async (req, res) => await getIssuesByUser(req, res,Issues))
-    .delete("/issues/:id", checkToken, async (req, res) => await deleteItem(req, res,Issues));
-  
+    .get("/issues/project/:id", checkToken, async (req, res) => await getIssuesByProject(req, res,Issues));

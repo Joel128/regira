@@ -2,7 +2,7 @@ import { Sequelize } from "sequelize";
 
 const sequelize = new Sequelize("regira", "admin", "admin", {
   host: "localhost",
-  port: "3307",
+  port: "3306",
   dialect: "mysql",
 });
 

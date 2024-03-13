@@ -12,12 +12,7 @@ export default () => {
   const redirect = useNavigate();
   const { loguejat } = useContext(Contexte);
 
-  useEffect(() => {
-    if (!loguejat) {
-      redirect("/login");
-    }
-  }, [loguejat]);
-console.log("dades:::::::",loguejat);
+
   const options = {
     method: "GET",
     credentials: "include",
@@ -36,7 +31,7 @@ console.log("dades:::::::",loguejat);
   if (error) {
     return <p>{error}</p>;
   }
-
+  
   return (
     <div>
       <h1>Projects</h1>
@@ -53,16 +48,12 @@ console.log("dades:::::::",loguejat);
                   Projects Status: {project.status === 1 ? "Open" : "Closed"}
                 </p>
               </div>
-              <div className="grid grid-cols-2 gap-4 px-6 pt-4 pb-2">
-            <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-              See issues
-            </button>
-            <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-              Create issues
-            </button>
+              <div className="grid grid-cols-1 gap-4 px-6 pt-4 pb-2">
+                <button onClick={() => redirect(`/projectDetail/${project.id}`)} className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                  See issues
+                </button>
+              </div>
             </div>
-            </div>
-
           </li>
         ))}
       </ul>

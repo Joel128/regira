@@ -14,11 +14,6 @@ export default () => {
   const { loguejat } = useContext(Contexte);
   const { projectid } = useParams();
 
-  useEffect(() => {
-    if (!loguejat) {
-      redirect("/login");
-    }
-  }, [loguejat]);
 
   const creaIssue = (e) => {
     e.preventDefault();
