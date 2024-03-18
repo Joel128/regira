@@ -50,7 +50,7 @@ export default () => {
         if (!data.error) {
           console.log(data);
           setLoguejat(data);
-          navigate("/projects");
+          redirect("/projects");
         }
       })
       .catch((error) => {

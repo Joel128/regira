@@ -14,11 +14,6 @@ export default ({ loguejat, setLoguejat, handleLogOut }) => {
             </a>
             <div className="space-x-4">
               {loguejat && (
-                <Link className="text-white" to="/newIssue">
-                  Create Issues
-                </Link>
-              )}
-              {loguejat && (
                 <Link className="text-white" to="/issueList">
                   Your issues
                 </Link>

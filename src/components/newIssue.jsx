@@ -1,24 +1,25 @@
 import { useState, useContext, useEffect } from "react";
-
+import Cookie from "js-cookie";
 import { useNavigate, useParams } from "react-router-dom";
 import Contexte from "../Context";
+
 
 const API_URL = "http://localhost:3000/api";
 
 export default () => {
-  const [titol, setTitol] = useState("");
+  const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
-  const [tipus, setTipus] = useState("");
-  const [prioritat, setPrioritat] = useState("");
+  const [issue_type, setIssue_type] = useState("");
+  const [priority, setPriority] = useState("");
   const redirect = useNavigate();
   const { loguejat } = useContext(Contexte);
-  const { projectid } = useParams();
-
+  const { id } = useParams();
+  console.log(loguejat);
 
   const creaIssue = (e) => {
     e.preventDefault();
-
-    const issue = { title: titol, desc, type: tipus, priority: prioritat };
+    console.log();
+    const issue = { title, desc,issue_type, priority };
 
     const options = {
       method: "POST",
@@ -28,12 +29,12 @@ export default () => {
         "Content-Type": "application/json",
       },
     };
-
-    fetch(API_URL + "/issues/project/" + projectid, options)
+    console.log(id);
+    fetch(API_URL + "/issue/" + id, options)
       .then((res) => res.json())
       .then((data) => {
         //console.log("resp", data);
-        redirect("/kanban/" + projectid);
+        redirect("/projectDetail/" + id);
       })
       .catch((cosa) => console.log(cosa));
   };
@@ -53,8 +54,8 @@ export default () => {
             Titol
           </label>
           <input
-            onInput={(e) => setTitol(e.target.value)}
-            value={titol}
+            onInput={(e) => setTitle(e.target.value)}
+            value={title}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="email"
             type="text"
@@ -85,9 +86,9 @@ export default () => {
               <input
                 type="radio"
                 value="bug"
-                name="tipus"
-                checked={tipus === "bug"}
-                onChange={() => setTipus("bug")}
+                name="issue_type"
+                checked={issue_type === "bug"}
+                onChange={() => setIssue_type("bug")}
               />
               Bug
             </label>
@@ -97,9 +98,9 @@ export default () => {
               <input
                 type="radio"
                 value="feature"
-                name="tipus"
-                checked={tipus === "feature"}
-                onChange={() => setTipus("feature")}
+                name="issue_type"
+                checked={issue_type === "feature"}
+                onChange={() => setIssue_type("feature")}
               />
               User story / Feature
             </label>
@@ -109,9 +110,9 @@ export default () => {
               <input
                 type="radio"
                 value="task"
-                name="tipus"
-                checked={tipus === "task"}
-                onChange={() => setTipus("task")}
+                name="issue_type"
+                checked={issue_type === "task"}
+                onChange={() => setIssue_type("task")}
               />
               Task
             </label>
@@ -124,9 +125,9 @@ export default () => {
               <input
                 type="radio"
                 value="high"
-                name="prioritat"
-                checked={prioritat === "high"}
-                onChange={() => setPrioritat("high")}
+                name="priority"
+                checked={priority === "high"}
+                onChange={() => setPriority("high")}
               />
               High
             </label>
@@ -136,9 +137,9 @@ export default () => {
               <input
                 type="radio"
                 value="medium"
-                name="prioritat"
-                checked={prioritat === "medium"}
-                onChange={() => setPrioritat("medium")}
+                name="priority"
+                checked={priority === "medium"}
+                onChange={() => setPriority("medium")}
               />
               Medium
             </label>
@@ -148,9 +149,9 @@ export default () => {
               <input
                 type="radio"
                 value="low"
-                name="prioritat"
-                checked={prioritat === "low"}
-                onChange={() => setPrioritat("low")}
+                name="priority"
+                checked={priority === "low"}
+                onChange={() => setPriority("low")}
               />
               Low
             </label>

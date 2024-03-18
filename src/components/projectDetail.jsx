@@ -1,7 +1,9 @@
 import { useParams } from "react-router-dom";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useCallback } from "react";
 import { useDrag, useDrop, DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { useNavigate } from "react-router-dom";
+
 import IssueCard from "./IssueCard";
 
 const Boxes = [
@@ -53,10 +55,35 @@ const Box = ({ children, caixa, mouItem }) => {
 export default () => {
   const [projects, setProjects] = useState([]);
   const [issues, setIssues] = useState([]);
-  const id = useParams().id;
+  const { id } = useParams();
   const [actualitza, setActualitza] = useState(0);
   const [error, setError] = useState("");
   const URL = "http://localhost:3000/api";
+  const redirect = useNavigate();
+
+  const carregaDades = () => {
+    const options = {
+      method: "GET",
+      credentials: "include",
+    };
+
+    fetch(`${URL}/projects/${id}`, options)
+      .then((res) => res.json())
+      .then((data) => {
+        setProjects(data);
+      })
+      .catch((error) => {
+        setError(error);
+      });
+    fetch(`${URL}/issues/project/${id}`, options)
+      .then((res) => res.json())
+      .then((data) => {
+        setIssues(data);
+      })
+      .catch((error) => {
+        setError(error);
+      });
+  };
 
   const mouItem = (item, status) => {
     const options = {
@@ -67,10 +94,11 @@ export default () => {
       credentials: "include",
       body: JSON.stringify({ status }),
     };
-    fetch(`${URL}/issues/${id}`, options)
+    fetch(`${URL}/issues/${item.id}`, options)
       .then((res) => res.json())
-      .then((data) => {
-        setActualitza(actualitza + 1);
+      .then(() => {
+        carregaDades();
+        //setActualitza(actualitza + 1);
       })
       .catch((error) => {
         setError(error);
@@ -88,37 +116,17 @@ export default () => {
     fetch(`${URL}/issues/${item.id}`, options)
       .then((res) => res.json())
       .then((data) => {
-        setActualitza(actualitza + 1);
+        carregaDades();
+        //setActualitza(actualitza + 1);
       })
       .catch((error) => {
         setError(error);
       });
-  };
-
-  const options = {
-    method: "GET",
-    credentials: "include",
   };
 
   useEffect(() => {
-    fetch(`${URL}/projects/${id}`, options)
-      .then((res) => res.json())
-      .then((data) => {
-        setProjects(data);
-      })
-      .catch((error) => {
-        setError(error);
-      });
-    fetch(`${URL}/issues/project/${id}`, options)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setIssues(data);
-      })
-      .catch((error) => {
-        setError(error);
-      });
-  }, [actualitza]);
+    carregaDades();
+  }, []);
 
   if (error) {
     console.log(error);
@@ -135,7 +143,7 @@ export default () => {
           <h1>Projecte: {projects?.name}</h1>
           <button
             className="border p-3 bg-red-200"
-            onClick={() => redirect(`/issue/new/${id}`)}
+            onClick={() => redirect(`/newIssue/${id}`)}
           >
             Nova tasca
           </button>

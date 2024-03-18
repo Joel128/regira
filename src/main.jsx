@@ -27,10 +27,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route index element={<Index />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/newIssue" element={<NewIssue />} />
         <Route path="/issueList" element={<IssueList />} />
         <Route path="/projects" element={<ProjectsList />} />
         <Route path="/projectDetail/:id" element={<ProjectDetail />} />
+        <Route path="/newIssue/:id" element={<NewIssue />} />{" "}
       </Route>
     </Routes>
   </BrowserRouter>
