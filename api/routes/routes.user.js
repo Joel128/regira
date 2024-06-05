@@ -9,7 +9,7 @@ import { Router } from "express";
 const router = Router();
 
 import userControllers from "../controllers/user.controllers.js";
-
+// Probando una cosa
 
 const {checkCookies, login, register } = userControllers;
 
